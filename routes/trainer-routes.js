@@ -1,28 +1,25 @@
+
+// definindo o strict mode
+'use strict'
+
 // realizando as importações
 const express = require('express')
-const {
-  addTrainer,
-  getAllTrainers,
-  getTrainer,
-  updateTrainer,
-  deleteTrainer
-} = require('../controllers/trainerController')
-
+const controller = require('../controllers/trainerController')
+const auth = require('../middlewares/authentication')
 // inicializando as rotas do express
 const router = express.Router()
 
-// criando as rotas para o recurso 'trainer'
-// definindo a rota para a listagem de treinadores
-router.get('/', getAllTrainers)
-// definindo a rota para listar treinador específico
-router.get('/:id', getTrainer)
-// definindo a rota para cadastro de treinadores
-router.post('/', addTrainer)
-// definindo a rota para alterar um treinador
-router.put('/:id', updateTrainer)
-// definindo a rota para excluir um treinador
-router.delete('/:id', deleteTrainer)
+// instanciando o objeto da classe trainerController
+let _ctrl = new controller()
 
+// definindo as rotas
+router.get('/', auth, _ctrl.get)
+router.get('/:id', _ctrl.getById)
+router.post('/', _ctrl.post)
+router.put('/:id', _ctrl.put)
+router.delete('/:id', _ctrl.delete)
+
+// exportando o módulo
 module.exports = {
   routes: router
 }
